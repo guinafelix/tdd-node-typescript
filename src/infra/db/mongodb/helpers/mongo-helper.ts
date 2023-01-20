@@ -26,7 +26,8 @@ export const MongoHelper = {
       id: collection._id,
       name: collection.name,
       email: collection.email,
-      password: collection.password
+      password: collection.password,
+      accessToken: collection.accessToken
     }
   }
 }
