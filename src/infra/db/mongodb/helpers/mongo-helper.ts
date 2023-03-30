@@ -29,5 +29,9 @@ export const MongoHelper = {
       password: collection.password,
       accessToken: collection.accessToken
     }
+  },
+
+  mapCollection (collection: any[]): any[] {
+    return collection.map(c => MongoHelper.map(c))
   }
 }
