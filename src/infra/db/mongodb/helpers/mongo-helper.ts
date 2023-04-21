@@ -23,11 +23,11 @@ export const MongoHelper = {
 
   map (collection: any): any {
     return {
-      id: collection._id,
-      name: collection.name,
-      email: collection.email,
-      password: collection.password,
-      accessToken: collection.accessToken
+      id: collection?._id,
+      name: collection?.name,
+      email: collection?.email,
+      password: collection?.password,
+      accessToken: collection?.accessToken
     }
   },
 
