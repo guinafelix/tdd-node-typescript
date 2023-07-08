@@ -23,7 +23,8 @@ const makeSurvey = async (): Promise<SurveyModel> => {
     }],
     date: new Date()
   })
-  return await surveyCollection.findOne({ _id: res.insertedId }) as any
+  const data = await surveyCollection.findOne({ _id: res.insertedId })
+  return MongoHelper.map(data)
 }
 
 const makeAccount = async (): Promise<AccountModel> => {
@@ -32,7 +33,8 @@ const makeAccount = async (): Promise<AccountModel> => {
     email: 'any_email@gmail.com',
     password: 'any_password'
   })
-  return await accountCollection.findOne({ _id: res.insertedId }) as any
+  const data = await accountCollection.findOne({ _id: res.insertedId })
+  return MongoHelper.map(data)
 }
 
 describe('Survey Mongo Repository', () => {
@@ -65,14 +67,16 @@ describe('Survey Mongo Repository', () => {
         date: new Date()
       })
       expect(surveyResult).toBeTruthy()
-      expect(surveyResult.id).toBeTruthy()
-      expect(surveyResult.answer).toBe(survey.answers[0].answer)
+      expect(surveyResult.surveyId).toEqual(survey.id)
+      expect(surveyResult.answers[0].count).toBe(1)
+      expect(surveyResult.answers[0].percent).toBe(100)
+      expect(surveyResult.answers[0].answer).toBe(survey.answers[0].answer)
     })
 
     test('Should update survey result if its not new', async () => {
       const survey = await makeSurvey()
       const account = await makeAccount()
-      const res = await surveyResultCollection.insertOne({
+      await surveyResultCollection.insertOne({
         surveyId: survey.id,
         accountId: account.id,
         answer: survey.answers[0].answer,
@@ -86,8 +90,9 @@ describe('Survey Mongo Repository', () => {
         date: new Date()
       })
       expect(surveyResult).toBeTruthy()
-      expect(surveyResult.id).toEqual(res.insertedId.toString())
-      expect(surveyResult.answer).toBe(survey.answers[1].answer)
+      expect(surveyResult.answers[0].count).toBe(1)
+      expect(surveyResult.answers[0].answer).toBe(survey.answers[1].answer)
+      expect(surveyResult.answers[0].percent).toBe(100)
     })
   })
 })
