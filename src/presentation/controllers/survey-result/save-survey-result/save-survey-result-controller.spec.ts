@@ -3,9 +3,9 @@ import { HttpRequest, LoadSurveyById, SaveSurveyResult } from './save-survey-res
 import { forbidden, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { InvalidParamError } from '@/presentation/errors'
 import { mockSurveyResultModel, throwError } from '@/domain/test'
-import MockDate from 'mockdate'
 import { mockLoadSurveyById } from '@/presentation/test'
 import { mockSaveSurveyResult } from '@/presentation/test/mock-survey-result'
+import MockDate from 'mockdate'
 
 const mockRequest = (): HttpRequest => ({
   params: {
